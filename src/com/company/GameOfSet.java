@@ -15,6 +15,47 @@ public class GameOfSet {
 
     private Random generator = new Random();
 
+    /**
+     * A method that takes three cards,
+     * and determines whether the three cards make a set
+     */
+    public boolean isSet(final Card a, final Card b, final Card c) {
+
+        return (isIdenticalColors(a, b, c) || isUniqueColors(a, b, c)) &&
+                (isIdenticalShapes(a, b, c) || isUniqueShapes(a, b, c)) &&
+                (isIdenticalShades(a, b, c) || isUniqueShades(a, b, c)) &&
+                (isIdenticalNumbers(a, b, c) || isUniqueNumbers(a, b, c));
+    }
+
+    /*
+    * A method that given a "board" of cards,
+    * will either find a set, or determine if there are no sets on the table
+    * */
+    public Card[] findSet() {
+        // i  j  k
+        // 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+
+        //                               i   j   k
+        // 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+
+        Card a, b, c;
+
+        for (int i = 0; i < this.board.size() - 2; i++) {
+            for (int j = i + 1; j < this.board.size() - 1; j++) {
+                for (int k = j + 1; k < this.board.size(); k++) {
+                    a = this.board.get(i);
+                    b = this.board.get(j);
+                    c = this.board.get(k);
+
+                    if (isSet(a, b, c)) {
+                        return new Card[]{ a, b, c };
+                    }
+                }
+            }
+        }
+        return new Card[] {};
+    }
+
     /*
     * A method that will play an entire game of Set,
     * from beginning to end, and return a list of each valid sets
@@ -117,49 +158,8 @@ public class GameOfSet {
         this.board.add(cardDrawn);
     }
 
-    /*
-    * A method that given a "board" of cards,
-    * will either find a set, or determine if there are no sets on the table
-    * */
-    public Card[] findSet() {
-        // i  j  k
-        // 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
-
-        //                               i   j   k
-        // 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
-
-        Card a, b, c;
-
-        for (int i = 0; i < this.board.size() - 2; i++) {
-            for (int j = i + 1; j < this.board.size() - 1; j++) {
-                for (int k = j + 1; k < this.board.size(); k++) {
-                    a = this.board.get(i);
-                    b = this.board.get(j);
-                    c = this.board.get(k);
-
-                    if (isSet(a, b, c)) {
-                        return new Card[]{ a, b, c };
-                    }
-                }
-            }
-        }
-        return new Card[] {};
-    }
-
     public boolean gameOver() {
         return this.deck.size() == 0;
-    }
-
-    /**
-     * A method that takes three cards,
-     * and determines whether the three cards make a set
-     */
-    public boolean isSet(final Card a, final Card b, final Card c) {
-
-        return (isIdenticalColors(a, b, c) || isUniqueColors(a, b, c)) &&
-               (isIdenticalShapes(a, b, c) || isUniqueShapes(a, b, c)) &&
-               (isIdenticalShades(a, b, c) || isUniqueShades(a, b, c)) &&
-               (isIdenticalNumbers(a, b, c) || isUniqueNumbers(a, b, c));
     }
 
     private boolean isUniqueNumbers(final Card a, final Card b, final Card c) {
