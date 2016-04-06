@@ -15,11 +15,6 @@ public class GameOfSet {
 
     private Random generator = new Random();
 
-    public static void main(String[] args) {
-        GameOfSet game = new GameOfSet();
-        game.start();
-    }
-
     /*
     * A method that will play an entire game of Set,
     * from beginning to end, and return a list of each valid sets
@@ -50,6 +45,7 @@ public class GameOfSet {
 
         // Game logic
         while (!gameOver()) {
+            System.out.println("\n\nPlayer " + currentPlayer + "'s turn");
             Card[] set = findSet();
 
             // if set is found
@@ -66,6 +62,21 @@ public class GameOfSet {
             drawCardAndAddToBoard();
             drawCardAndAddToBoard();
 
+            System.out.println("Move on to next player? \n(yes) to move on." +
+                    "Any other text is considered (no) otherwise");
+            boolean moveon = false;
+            while (!moveon) {
+                Scanner promptScanner = new Scanner(System.in);
+                final String userResponse = promptScanner.nextLine();
+                if (userResponse.toLowerCase().trim().equals("yes") ||
+                    userResponse.toLowerCase().trim().equals("y")) {
+                    System.out.print("Player " + currentPlayer + " has " + players.get(currentPlayer).countSets() + " cards");
+                    moveon = true;
+                } else {
+                    System.out.println("Move on to next player? \n(yes) to move on." +
+                            "Any other text is considered (no) otherwise");
+                }
+            }
             // move on to next player
             currentPlayer = (currentPlayer + 1) % this.players.size();
         }
