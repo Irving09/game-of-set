@@ -1,37 +1,54 @@
 package com.company;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
+import java.util.Random;
+import java.util.Scanner;
 
 public class GameOfSet {
+    public static final int NUM_OF_CARDS_IN_DECK = 54;
+    public static final int NUM_OF_CARDS_DEALT = 12;
+
     private List<Card> board = new ArrayList<Card>();
+    private List<Card> deck = new ArrayList<Card>();
+    private List<Player> players = new ArrayList<Player>();
 
-    public static void main(String[] args) {
-//        Card test1 = new Card(Color.RED, Shape.SQUIGGLE, Shading.SOLID, Number.TWO);
-//        Card test2 = new Card(Color.GREEN, Shape.DIAMOND, Shading.SOLID, Number.ONE);
-//        Card test3 = new Card(Color.PURPLE, Shape.OVAL, Shading.SOLID, Number.THREE);
-//
-//        Card test4 = new Card(Color.RED, Shape.SQUIGGLE, Shading.SOLID, Number.TWO);
-//        Card test5 = new Card(Color.GREEN, Shape.SQUIGGLE, Shading.SOLID, Number.ONE);
-//        Card test6 = new Card(Color.PURPLE, Shape.OVAL, Shading.SOLID, Number.THREE);
-//
-        GameOfSet game = new GameOfSet();
-//        boolean result1 = game.isSet(test1, test2, test3);
-//        boolean result2 = game.isSet(test4, test5, test6);
-//
-//        System.out.println("result1: " + result1);
-//        System.out.println("result2: " + result2);
-        game.start();
+    private Random generator = new Random();
 
-        Card[] result = game.findSet();
-        System.out.println(Arrays.toString(result));
+    public boolean gameOver() {
+        return this.deck.size() == 0;
     }
 
     public void start() {
-        for (int i = 0; i < 12; i++) {
-            board.add(new Card());
+        // Initialize players
+        System.out.print("Enter the number of players: ");
+        Scanner scanner = new Scanner(System.in);
+        for (int i = 0; i < scanner.nextInt(); i++) {
+            players.add(new Player());
+        }
+
+        // Initialize deck of cards
+        for (int i = 0; i < NUM_OF_CARDS_IN_DECK; i++) {
+            this.deck.add(new Card());
+        }
+
+        // Initialize board of cards
+        for (int i = 0; i < NUM_OF_CARDS_DEALT; i++) {
+            Card cardDrawn = this.deck.remove(generator.nextInt(this.deck.size()));
+            this.board.add(cardDrawn);
+        }
+
+        // Game logic
+        while (!gameOver()) {
+            // if set is found
+                // give current set to current player
+
+            // draw three from deck, and add them to the board
+
+            // move on to next player
+
+
+
         }
     }
 
