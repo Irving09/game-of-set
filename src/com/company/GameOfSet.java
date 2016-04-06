@@ -15,15 +15,22 @@ public class GameOfSet {
 
     private Random generator = new Random();
 
-    public boolean gameOver() {
-        return this.deck.size() == 0;
+    public static void main(String[] args) {
+        GameOfSet game = new GameOfSet();
+        game.start();
     }
 
+    /*
+    * A method that will play an entire game of Set,
+    * from beginning to end, and return a list of each valid sets
+    * you removed from the board.
+    * */
     public void start() {
         // Initialize players
         System.out.print("Enter the number of players: ");
         Scanner scanner = new Scanner(System.in);
-        for (int i = 0; i < scanner.nextInt(); i++) {
+        int numberOfPlayersEntered = scanner.nextInt();
+        for (int i = 0; i < numberOfPlayersEntered; i++) {
             players.add(new Player());
         }
 
@@ -38,18 +45,65 @@ public class GameOfSet {
             this.board.add(cardDrawn);
         }
 
+        System.out.println("Starting game of sets...");
+        int currentPlayer = 0;
+
         // Game logic
         while (!gameOver()) {
+            Card[] set = findSet();
+
             // if set is found
+            if (set.length > 0) {
                 // give current set to current player
+                this.players.get(currentPlayer).addSet(set[0], set[1], set[2]);
+                this.board.remove(set[0]);
+                this.board.remove(set[1]);
+                this.board.remove(set[2]);
+            }
 
             // draw three from deck, and add them to the board
+            drawCardAndAddToBoard();
+            drawCardAndAddToBoard();
+            drawCardAndAddToBoard();
 
             // move on to next player
-
-
-
+            currentPlayer = (currentPlayer + 1) % this.players.size();
         }
+
+        System.out.println("And the winner(s) are...");
+        printWinners();
+    }
+
+    private void printWinners() {
+        List<Integer> playersWithTopSets = new ArrayList<Integer>();
+
+        int max = 0;
+        int playerIndex = 0;
+        for (final Player player : this.players) {
+
+            if (player.countSets() > max) {
+                playersWithTopSets.clear();
+                playersWithTopSets.add(playerIndex);
+            }
+
+            if (player.countSets() == max) {
+                playersWithTopSets.add(playerIndex);
+            }
+            playerIndex++;
+        }
+
+        if (playersWithTopSets.size() > 1) {
+            System.out.println(playersWithTopSets);
+        } else if (playersWithTopSets.size() == 1) {
+            System.out.println("Player " + playersWithTopSets.get(0));
+        } else {
+            System.out.println("There are no winners. None of the players found a set of cards during game.");
+        }
+    }
+
+    private void drawCardAndAddToBoard() {
+        Card cardDrawn = this.deck.remove(generator.nextInt(this.deck.size()));
+        this.board.add(cardDrawn);
     }
 
     /*
@@ -79,6 +133,10 @@ public class GameOfSet {
             }
         }
         return new Card[] {};
+    }
+
+    public boolean gameOver() {
+        return this.deck.size() == 0;
     }
 
     /**

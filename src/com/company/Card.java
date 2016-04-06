@@ -43,6 +43,23 @@ public class Card {
         sb.append(this.number);
         return sb.toString();
     }
+
+    public int hashCode() {
+        return this.toString().hashCode();
+    }
+
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Card))
+            return false;
+        if (obj == this)
+            return true;
+
+        Card other = (Card) obj;
+        return other.getNumber() == this.number &&
+               other.getShading() == this.shade &&
+               other.getShape() == this.shape &&
+               other.getColor() == this.color;
+    }
 }
 
 enum Color {
